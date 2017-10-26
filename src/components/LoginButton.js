@@ -22,4 +22,4 @@ class LoginButton extends Component {
 }
 
 
-export default LoginButton;
+export {LoginButton};

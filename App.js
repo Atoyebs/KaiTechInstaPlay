@@ -1,6 +1,8 @@
 import React from 'react';
 import {Text, View, ScrollView, TouchableHighlight, Image, StatusBar } from 'react-native';
 import Dimensions from 'Dimensions';
+import { LoginButton } from './src/components';
+
 
 //this code creates a constant that holds the dimensions of the current device as an object
 const window = Dimensions.get('window');
@@ -40,8 +42,8 @@ const viewStyles = {
     alignItems: 'center'
   },
   instagramTextLogo: {
-    width: 145,
-    height: 55,
+    width: (window.width * 0.40),
+    height: (window.height * 0.12),
     marginTop: (window.height * 0.20),
     marginBottom: 30
   }
