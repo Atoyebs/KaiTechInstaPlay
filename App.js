@@ -4,14 +4,14 @@ import {Text, View, ScrollView, TouchableHighlight } from 'react-native';
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View style={viewStyles.container}>
         <Text>Open up App.js to start working on your app!</Text>
       </View>
     );
   }
 }
 
-const styles = {
+const viewStyles = {
 
   container: {
     flex: 1,
