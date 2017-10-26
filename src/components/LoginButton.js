@@ -11,7 +11,17 @@ class LoginButton extends Component {
   render(){
 
     return(
-      <TouchableHighlight>
+      <TouchableHighlight
+       underlayColor={'transparent'}
+       activeOpacity={this.props.activeOpacity}
+       style={[this.props.touchableHighlightStyle, viewStyles.supplementaryHighlightStyle]}
+       onPress={this.props.buttonTapped}
+      >
+        <View style={this.props.buttonViewStyle}>
+
+          <Text style={this.props.buttonTextStyle}>{this.props.children}</Text>
+
+        </View>
 
       </TouchableHighlight>
     );
@@ -21,5 +31,14 @@ class LoginButton extends Component {
 
 }
 
+const viewStyles = {
 
-export {LoginButton};
+  supplementaryHighlightStyle: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+
+};
+
+export { LoginButton };
