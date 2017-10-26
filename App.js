@@ -1,12 +1,16 @@
 import React from 'react';
-import {Text, View, ScrollView, TouchableHighlight, Image } from 'react-native';
+import {Text, View, ScrollView, TouchableHighlight, Image, StatusBar } from 'react-native';
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={viewStyles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
+      <Image source={require('./src/images/insta_login_background.jpg')}>
+
+        <StatusBar backgroundColor="transparent" barStyle="light-content" />
+
+        
+
+      </Image>
     );
   }
 }
