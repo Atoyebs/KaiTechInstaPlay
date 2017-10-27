@@ -22,7 +22,8 @@ const loginButtonInfo = {
 }
 
 const urls = {
-  forgotInstagramLogin: 'https://www.instagram.com/accounts/password/reset'
+  forgotInstagramLogin: 'https://www.instagram.com/accounts/password/reset',
+  twitterLogin: 'https://twitter.com/login?lang=en'
 }
 
 const standardComponentWidth = window.width * 0.82;
@@ -40,6 +41,25 @@ export default class App extends React.Component {
         <View style={viewStyles.orSeparatorLine}/>
         <Text style={textStyles.orSeparatorText}> OR</Text>
         <View style={viewStyles.orSeparatorLine}/>
+      </View>
+    );
+  }
+
+  /* this function/method will render the login with twitter component */
+  loginWithTwitterTappableTextComponent = () => {
+    return (
+      <View style={viewStyles.twitterLoginComponentEncapsulatingView}>
+        <Image
+          source={require('./src/images/icons/twitter_bird.png')}
+          style={viewStyles.twitterIcon}
+          resizeMode={'contain'}
+        />
+        <TappableText
+          textStyle={textStyles.twitterLoginText}
+          textTapped={() => Linking.openURL(urls.twitterLogin)}
+        >
+          Log in with Twitter
+        </TappableText>
       </View>
     );
   }
@@ -89,6 +109,7 @@ export default class App extends React.Component {
 
           {this.orSeparatorComponent()}
 
+          {this.loginWithTwitterTappableTextComponent()}
 
         </ScrollView>
 
@@ -152,7 +173,8 @@ const viewStyles = {
     flexDirection: 'row',
     paddingHorizontal: 10,
     paddingVertical: 2,
-    marginVertical: 25,
+    marginTop: 25,
+    marginBottom: 18,
     alignItems: 'center'
   },
   orSeparatorLine: {
@@ -161,6 +183,17 @@ const viewStyles = {
     backgroundColor: colors.facebookButtonBorderColor,
     borderColor: colors.facebookButtonBorderColor,
     borderWidth: 0.5
+  },
+  twitterLoginComponentEncapsulatingView: {
+    flexDirection: 'row',
+    width: standardComponentWidth,
+    height: 35,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  twitterIcon: {
+    width: 17,
+    height: 17
   }
 
 };
@@ -179,8 +212,15 @@ const textStyles = {
     fontSize: 12.5,
     marginHorizontal: 4,
     backgroundColor: 'transparent',
-    color: 'white',
+    color: colors.facebookButtonBorderColor,
     flex: 1
+  },
+  twitterLoginText: {
+    fontWeight: 'bold',
+    fontSize: 12,
+    marginLeft: 7,
+    color: 'white',
+    backgroundColor: 'transparent'
   }
 
 };
