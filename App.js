@@ -33,6 +33,16 @@ export default class App extends React.Component {
     console.log('button was just tapped');
   }
 
+  /* this function/method will render the -- OR -- separator component */
+  orSeparatorComponent = () => {
+    return (
+      <View style={viewStyles.orSeparatorComponent}>
+        <View style={viewStyles.orSeparatorLine}/>
+        <Text style={textStyles.orSeparatorText}> OR</Text>
+        <View style={viewStyles.orSeparatorLine}/>
+      </View>
+    );
+  }
 
   render() {
     return (
@@ -76,6 +86,9 @@ export default class App extends React.Component {
               Get Help Signing In
             </TappableText>
           </View>
+
+          {this.orSeparatorComponent()}
+
 
         </ScrollView>
 
@@ -133,8 +146,21 @@ const viewStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    marginTop: 10,
-    marginBottom: window.height * 0.15
+    marginTop: 10
+  },
+  orSeparatorComponent: {
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    marginVertical: 25,
+    alignItems: 'center'
+  },
+  orSeparatorLine: {
+    height: 1,
+    flex: 5,
+    backgroundColor: colors.facebookButtonBorderColor,
+    borderColor: colors.facebookButtonBorderColor,
+    borderWidth: 0.5
   }
 
 };
@@ -147,6 +173,14 @@ const textStyles = {
   },
   forgottenLoginBold: {
     fontWeight: 'bold'
+  },
+  orSeparatorText: {
+    fontWeight: 'bold',
+    fontSize: 12.5,
+    marginHorizontal: 4,
+    backgroundColor: 'transparent',
+    color: 'white',
+    flex: 1
   }
 
 };
