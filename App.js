@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, ScrollView, TouchableHighlight, Image, StatusBar, Linking } from 'react-native';
+import {Text, View, ScrollView, TouchableHighlight, Image, StatusBar, Linking, WebView } from 'react-native';
 import Dimensions from 'Dimensions';
 import { LoginButton, TappableText } from './src/components';
 
@@ -24,16 +24,48 @@ const loginButtonInfo = {
 const urls = {
   forgotInstagramLogin: 'https://www.instagram.com/accounts/password/reset',
   twitterLogin: 'https://twitter.com/login?lang=en',
-  instagramSignUp: 'https://www.instagram.com/accounts/emailsignup/?hl=en'
+  instagramSignUp: 'https://www.instagram.com/accounts/emailsignup/?hl=en',
+  instagramAuthLogin: 'https://api.instagram.com/oauth/authorize/?client_id=cda6dee7d8164a868150910407962f52&redirect_uri=http://www.kaitechconsulting.com&response_type=token&scope=basic+follower_list+comments+likes',
+  instagramLogout: 'https://instagram.com/accounts/logout',
+  instagramBase: 'https://www.instagram.com/'
 }
 
 const standardComponentWidth = window.width * 0.82;
 
 export default class App extends React.Component {
 
-  loginButtonTapped = () => {
-    console.log('button was just tapped');
+  constructor(props){
+
+    super(props);
+
+    //initialise the global state object
+    this.state = {
+      authenticationURL: urls.instagramLogout,
+      retrievedAccessToken: '',
+      isUserLoggedIn: false,
+      //when the application loads up you don't want it displaying the authentication web view
+      displayAuthenticationWebView: false
+    }
+
   }
+
+  loginButtonTapped = () => {
+    this.setState({displayAuthenticationWebView: true});
+  }
+
+  /*This function will run EVERY TIME THE URL CHANGES*/
+  onURLStateChange = (webViewState) => {
+
+      let accessTokenSubString = 'access_token=';
+
+      console.log("Current webViewState = " + webViewState.url);
+
+      if(webViewState.url == urls.instagramBase){
+        this.setState({authenticationURL: urls.instagramAuthLogin});
+      }
+
+  }
+
 
   /* this function/method will render the -- OR -- separator component */
   orSeparatorComponent = () => {
@@ -49,9 +81,9 @@ export default class App extends React.Component {
   signUpFooter = () => {
     return (
       <View style={[viewStyles.forgottenLoginEncapsulationView, viewStyles.signUpFooterComponent]}>
-        <Text style={[textStyles.forgottenLogin, {color: 'black'}]}>Dont you have an account? </Text>
+        <Text style={[textStyles.forgottenLogin, {color: 'grey'}]}>Dont you have an account? </Text>
         <TappableText
-          textStyle={[textStyles.forgottenLogin ,textStyles.forgottenLoginBold, {color: 'black'}]}
+          textStyle={[textStyles.forgottenLogin ,textStyles.forgottenLoginBold, {color: 'grey'}]}
           textTapped={() => Linking.openURL(urls.instagramSignUp)}
         >
           Sign Up
@@ -79,12 +111,22 @@ export default class App extends React.Component {
     );
   }
 
-  render() {
+
+  authenticationWebViewComponent = () => {
+    return (
+      <WebView
+        source={{ uri: this.state.authenticationURL }}
+        startInLoadingState={true}
+        onNavigationStateChange={this.onURLStateChange}
+      />
+    );
+  }
+
+
+  loginScreenComponent = () => {
     return (
       <Image source={require('./src/images/insta_login_background.jpg')} style={viewStyles.container}>
-
         <StatusBar backgroundColor="transparent" barStyle="light-content" />
-
         <ScrollView>
 
           <Image source={require('./src/images/instagram-text-logo.png')}
@@ -133,6 +175,24 @@ export default class App extends React.Component {
       </Image>
     );
   }
+
+
+  render() {
+
+    //if the displayAuthenticationWebView is false then show the loginScreen
+    if(!this.state.displayAuthenticationWebView){
+      return (
+        this.loginScreenComponent()
+      );
+    }
+    else {
+      return (
+        this.authenticationWebViewComponent()
+      );
+    }
+
+  }
+
 }
 
 const viewStyles = {
