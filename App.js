@@ -63,7 +63,18 @@ export default class App extends React.Component {
       if(webViewState.url == urls.instagramBase){
         this.setState({authenticationURL: urls.instagramAuthLogin});
       }
+      //OTHERWISE if the current URL contains the word 'access_token=' then . . .
+      else if(webViewState.url.includes(accessTokenSubString)){
 
+        /*find the index of the = after 'access_token'*/
+        let startIndexOfAccessToken = webViewState.url.lastIndexOf(accessTokenSubString) + accessTokenSubString.length;
+
+        /*if the accessToken is not populated (i.e if its length <= 1) then populate it*/
+        if (this.state.retrievedAccessToken.length < 1) {
+          //populate/set the access token with everything after the access_token= substring
+          this.setState({retrievedAccessToken: webViewState.url.substr(startIndexOfAccessToken), displayAuthenticationWebView: false});
+        }
+      }
   }
 
 
@@ -179,17 +190,31 @@ export default class App extends React.Component {
 
   render() {
 
+    let hasSuccesfullyLoggedIn = (this.state.retrievedAccessToken.length > 1);
+    let shouldDisplayLoginScreen = (!this.state.displayAuthenticationWebView && this.state.retrievedAccessToken.length < 1);
+
     //if the displayAuthenticationWebView is false then show the loginScreen
-    if(!this.state.displayAuthenticationWebView){
+    if(shouldDisplayLoginScreen){
       return (
         this.loginScreenComponent()
       );
     }
-    else {
+    //display authentication WebView
+    else if(this.state.displayAuthenticationWebView == true) {
       return (
         this.authenticationWebViewComponent()
       );
     }
+    //at this point we've retrieved an access token, the user has succesfully logged on
+    else if(hasSuccesfullyLoggedIn){
+      console.log("Yay! Hit has succesfully login");
+      return (
+        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+          <Text>CONGRATULATIONS YOUVE LOGGED IN SUCCESFULLY</Text>
+        </View>
+      );
+    }
+
 
   }
 
