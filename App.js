@@ -23,7 +23,8 @@ const loginButtonInfo = {
 
 const urls = {
   forgotInstagramLogin: 'https://www.instagram.com/accounts/password/reset',
-  twitterLogin: 'https://twitter.com/login?lang=en'
+  twitterLogin: 'https://twitter.com/login?lang=en',
+  instagramSignUp: 'https://www.instagram.com/accounts/emailsignup/?hl=en'
 }
 
 const standardComponentWidth = window.width * 0.82;
@@ -41,6 +42,20 @@ export default class App extends React.Component {
         <View style={viewStyles.orSeparatorLine}/>
         <Text style={textStyles.orSeparatorText}> OR</Text>
         <View style={viewStyles.orSeparatorLine}/>
+      </View>
+    );
+  }
+
+  signUpFooter = () => {
+    return (
+      <View style={[viewStyles.forgottenLoginEncapsulationView, viewStyles.signUpFooterComponent]}>
+        <Text style={[textStyles.forgottenLogin, {color: 'black'}]}>Dont you have an account? </Text>
+        <TappableText
+          textStyle={[textStyles.forgottenLogin ,textStyles.forgottenLoginBold, {color: 'black'}]}
+          textTapped={() => Linking.openURL(urls.instagramSignUp)}
+        >
+          Sign Up
+        </TappableText>
       </View>
     );
   }
@@ -113,6 +128,8 @@ export default class App extends React.Component {
 
         </ScrollView>
 
+        {this.signUpFooter()}
+
       </Image>
     );
   }
@@ -174,7 +191,7 @@ const viewStyles = {
     paddingHorizontal: 10,
     paddingVertical: 2,
     marginTop: 25,
-    marginBottom: 18,
+    marginBottom: 14,
     alignItems: 'center'
   },
   orSeparatorLine: {
@@ -194,6 +211,17 @@ const viewStyles = {
   twitterIcon: {
     width: 17,
     height: 17
+  },
+  signUpFooterComponent: {
+    flex: 0.4,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+    shadowColor: 'black',
+    shadowOffset: {width:0 , height: 1.5},
+    elevation: 2,
+    height: null,
+    width: window.width
   }
 
 };
