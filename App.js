@@ -108,8 +108,8 @@ const viewStyles = {
   instagramTextLogo: {
     width: (window.width * 0.40),
     height: (window.height * 0.12),
-    marginTop: (window.height * 0.18),
-    marginBottom: 30,
+    marginTop: (window.height * 0.14),
+    marginBottom: 25,
     alignSelf: 'center'
   },
   instagramLoginButtonView: {
