@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {Text, View, ScrollView, TouchableHighlight, Image, StatusBar, Linking, WebView } from 'react-native';
 import Dimensions from 'Dimensions';
 import { LoginButton, TappableText } from './src/components';
@@ -6,6 +6,10 @@ import { LoginButton, TappableText } from './src/components';
 
 //this code creates a constant that holds the dimensions of the current device as an object
 const window = Dimensions.get('window');
+
+const standardComponentWidth = window.width * 0.82;
+
+//===================== OBJECT PROPERTIES ====================
 
 const colors = {
   facebook: 'rgb(59, 89, 152)',
@@ -30,9 +34,11 @@ const urls = {
   instagramBase: 'https://www.instagram.com/'
 }
 
-const standardComponentWidth = window.width * 0.82;
 
-export default class App extends React.Component {
+//=========================== CLASS DECLARATION ===========================
+
+
+class App extends Component {
 
   constructor(props){
 
@@ -48,6 +54,9 @@ export default class App extends React.Component {
     }
 
   }
+
+//=========================== ACTION FUNCTIONS ===========================
+
 
   loginButtonTapped = () => {
     this.setState({displayAuthenticationWebView: true});
@@ -76,6 +85,9 @@ export default class App extends React.Component {
         }
       }
   }
+
+
+//=========================== COMPONENT CREATION FUNCTIONS ===========================
 
 
   /* this function/method will render the -- OR -- separator component */
@@ -188,6 +200,7 @@ export default class App extends React.Component {
   }
 
 
+
   render() {
 
     let hasSuccesfullyLoggedIn = (this.state.retrievedAccessToken.length > 1);
@@ -219,6 +232,9 @@ export default class App extends React.Component {
   }
 
 }
+
+
+//===================== STYLES =====================
 
 const viewStyles = {
 
@@ -337,3 +353,5 @@ const textStyles = {
   }
 
 };
+
+export default App;
