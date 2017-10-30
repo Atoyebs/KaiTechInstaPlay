@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Text, View, ScrollView, TouchableHighlight, Image, StatusBar, Linking, WebView, Alert, ActivityIndicator } from 'react-native';
+import {Text, View, ScrollView, TouchableHighlight, Image, StatusBar, Linking, WebView, Alert, ActivityIndicator, StyleSheet } from 'react-native';
 import { Constants, BlurView } from 'expo';
 import Dimensions from 'Dimensions';
 import { LoginButton, TappableText } from './src/components';
@@ -229,8 +229,24 @@ class App extends Component {
   instagramActivityIndicatorBlurView = () => {
 
     return (
-      <View style={{backgroundColor: 'blue', flex: 1}}>
-      </View>
+      <Image
+        source={require('./src/images/instagram_wallpaper.jpg')}
+        resizeMode={'cover'}
+        style={{width: null, height: null, flex: 1}}
+      >
+        <BlurView
+            tint="dark"
+            intensity={85}
+            style={[StyleSheet.absoluteFill, {alignItems: 'center', justifyContent: 'center'}]}
+        >
+
+          <ActivityIndicator size="large" style={{margin: 10}}/>
+
+          <Text style={{color: 'white', fontWeight: '600', fontSize: 15}}>Data Loading ...</Text>
+
+        </BlurView>
+
+      </Image>
     );
 
   }
