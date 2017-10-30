@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const axiosEndpointManager = axios.create ({
   baseURL: 'https://api.instagram.com/v1/users/',
-  timeout: 20000
+  timeout: 30000
 });
 
 const responseState = {

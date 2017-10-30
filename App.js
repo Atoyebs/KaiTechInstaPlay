@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView, TouchableHighlight, Image, StatusBar, Linking, WebView, Alert, ActivityIndicator, StyleSheet } from 'react-native';
 import { Constants, BlurView } from 'expo';
 import Dimensions from 'Dimensions';
-import { LoginButton, TappableText } from './src/components';
+import { LoginButton, TappableText, InstaNavigationBar } from './src/components';
 import { NetworkManager } from './src/model';
 
 
@@ -122,7 +122,7 @@ class App extends Component {
     this.networkManager.getSessionAndFeedData((sessionResponse) => {
       self.setState({sessionData: sessionResponse});
     }, (feedResponse) => {
-      self.setState({feedDataArray: feedResponse});
+      self.setState({feedDataArray: feedResponse, isDataLoading: false});
     });
 
 
@@ -297,8 +297,8 @@ class App extends Component {
     //at this point we've retrieved an access token, the user has succesfully logged on
     else if(hasSuccesfullyLoggedIn){
       return (
-        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-          <Text>CONGRATULATIONS YOUVE LOGGED IN SUCCESFULLY</Text>
+        <View style={{alignItems: 'center', flex: 1}}>
+          <InstaNavigationBar />
         </View>
       );
     }
