@@ -11,19 +11,30 @@ const axiosEndpointManager = axios.create ({
   timeout: 20000
 });
 
+const responseState = {
+  unsent: 0,
+  opened: 1,
+  headersRecieved: 2,
+  loading: 3,
+  done: 4
+}
+
 class NetworkManager {
 
   constructor(accessToken){
     this.accessToken = accessToken;
   }
 
-  getLoggedInUserInformation(){
+  getLoggedInUserInformation(completionCallback){
 
     /*self/?access_token=ACCESS-TOKEN*/
 
     axiosEndpointManager.get('self/?access_token=' + this.accessToken)
     .then(response => {
-      console.log(response.data);
+      //if the response is succesfully completed
+      if (response.request.readyState == responseState.done) {
+        completionCallback(response.data);
+      }
     })
     .catch(response => {
       console.log("Oops this one is an error");

@@ -53,6 +53,7 @@ class App extends Component {
       //when the application loads up you don't want it displaying the authentication web view
       displayAuthenticationWebView: false,
       feedDataArray: [],
+      sessionData: null,
       isDataLoading: false,
       retrievedAccessToken: '',
       shouldDisplayLoginScreen: true,
@@ -61,9 +62,6 @@ class App extends Component {
 
     //has the succesfully logged in alert already popped up?
     this.isSuccesfullyLoggedInAlertAlreadyPoppedUp = false;
-    ;
-
-
 
   }
 
@@ -117,10 +115,13 @@ class App extends Component {
 
   beginFetchUserSessionData = (accessToken) => {
 
-
     this.networkManager = new NetworkManager(accessToken);
 
-    this.networkManager.getLoggedInUserInformation();
+    let self = this;
+
+    this.networkManager.getLoggedInUserInformation((responseData) => {
+      self.setState({sessionData: responseData});
+    });
 
     //change the state of a few state values
     this.setState({retrievedAccessToken: accessToken, isDataLoading: true, displayAuthenticationWebView: false});
@@ -248,6 +249,7 @@ class App extends Component {
         resizeMode={'cover'}
         style={{width: null, height: null, flex: 1}}
       >
+        <StatusBar backgroundColor="transparent" barStyle="light-content" />
         <BlurView
             tint="dark"
             intensity={85}
