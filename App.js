@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import {Text, View, ScrollView, TouchableHighlight, Image, StatusBar, Linking, WebView, Alert, ActivityIndicator, StyleSheet } from 'react-native';
+import { Text, View, ScrollView, TouchableHighlight, Image, StatusBar, Linking, WebView, Alert, ActivityIndicator, StyleSheet } from 'react-native';
 import { Constants, BlurView } from 'expo';
 import Dimensions from 'Dimensions';
 import { LoginButton, TappableText } from './src/components';
+import { NetworkManager } from './src/model';
 
 
 //this code creates a constant that holds the dimensions of the current device as an object
@@ -94,6 +95,8 @@ class App extends Component {
           //populate/set the access token with everything after the access_token= substring
           // this.setState({retrievedAccessToken: webViewState.url.substr(startIndexOfAccessToken), displayAuthenticationWebView: false});
 
+          var accessToken = webViewState.url.substr(startIndexOfAccessToken);
+
           if (this.isSuccesfullyLoggedInAlertAlreadyPoppedUp == false) {
 
             /*Give the user an alert to say that they've succesfully logged in*/
@@ -101,7 +104,7 @@ class App extends Component {
               'Success',
               'Congratulations youve been succesfully authenticated!',
               [
-                {text: 'Proceed', onPress: () => this.setState({retrievedAccessToken: webViewState.url.substr(startIndexOfAccessToken), isDataLoading: true, displayAuthenticationWebView: false})}
+                {text: 'Proceed', onPress: () => this.beginFetchUserSessionData(accessToken)}
               ]
             )
 
@@ -112,6 +115,17 @@ class App extends Component {
       }
   }
 
+  beginFetchUserSessionData = (accessToken) => {
+
+
+    this.networkManager = new NetworkManager(accessToken);
+
+    this.networkManager.getLoggedInUserInformation();
+
+    //change the state of a few state values
+    this.setState({retrievedAccessToken: accessToken, isDataLoading: true, displayAuthenticationWebView: false});
+
+  }
 
 //=========================== COMPONENT CREATION FUNCTIONS ===========================
 
@@ -240,7 +254,7 @@ class App extends Component {
             style={[StyleSheet.absoluteFill, {alignItems: 'center', justifyContent: 'center'}]}
         >
 
-          <ActivityIndicator size="large" style={{margin: 10}}/>
+          <ActivityIndicator size="large" style={{margin: 10}} />
 
           <Text style={{color: 'white', fontWeight: '600', fontSize: 15}}>Data Loading ...</Text>
 
