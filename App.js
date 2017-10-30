@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Text, View, ScrollView, TouchableHighlight, Image, StatusBar, Linking, WebView } from 'react-native';
+import {Text, View, ScrollView, TouchableHighlight, Image, StatusBar, Linking, WebView, Alert, ActivityIndicator } from 'react-native';
+import { Constants, BlurView } from 'expo';
 import Dimensions from 'Dimensions';
 import { LoginButton, TappableText } from './src/components';
 
@@ -46,12 +47,22 @@ class App extends Component {
 
     //initialise the global state object
     this.state = {
-      authenticationURL: urls.instagramLogout,
-      retrievedAccessToken: '',
+      authenticationURL: urls.instagramAuthLogin,
       isUserLoggedIn: false,
       //when the application loads up you don't want it displaying the authentication web view
-      displayAuthenticationWebView: false
+      displayAuthenticationWebView: false,
+      feedDataArray: [],
+      isDataLoading: false,
+      retrievedAccessToken: '',
+      shouldDisplayLoginScreen: true,
+      hasRetrievedInitialSuccesfulFeedDataResponse: false
     }
+
+    //has the succesfully logged in alert already popped up?
+    this.isSuccesfullyLoggedInAlertAlreadyPoppedUp = false;
+    ;
+
+
 
   }
 
@@ -59,7 +70,7 @@ class App extends Component {
 
 
   loginButtonTapped = () => {
-    this.setState({displayAuthenticationWebView: true});
+    this.setState({displayAuthenticationWebView: true, shouldDisplayLoginScreen: false});
   }
 
   /*This function will run EVERY TIME THE URL CHANGES*/
@@ -81,7 +92,22 @@ class App extends Component {
         /*if the accessToken is not populated (i.e if its length <= 1) then populate it*/
         if (this.state.retrievedAccessToken.length < 1) {
           //populate/set the access token with everything after the access_token= substring
-          this.setState({retrievedAccessToken: webViewState.url.substr(startIndexOfAccessToken), displayAuthenticationWebView: false});
+          // this.setState({retrievedAccessToken: webViewState.url.substr(startIndexOfAccessToken), displayAuthenticationWebView: false});
+
+          if (this.isSuccesfullyLoggedInAlertAlreadyPoppedUp == false) {
+
+            /*Give the user an alert to say that they've succesfully logged in*/
+            Alert.alert(
+              'Success',
+              'Congratulations youve been succesfully authenticated!',
+              [
+                {text: 'Proceed', onPress: () => this.setState({retrievedAccessToken: webViewState.url.substr(startIndexOfAccessToken), isDataLoading: true, displayAuthenticationWebView: false})}
+              ]
+            )
+
+            this.isSuccesfullyLoggedInAlertAlreadyPoppedUp = true;
+          }
+
         }
       }
   }
@@ -200,27 +226,41 @@ class App extends Component {
   }
 
 
+  instagramActivityIndicatorBlurView = () => {
+
+    return (
+      <View style={{backgroundColor: 'blue', flex: 1}}>
+      </View>
+    );
+
+  }
+
 
   render() {
 
-    let hasSuccesfullyLoggedIn = (this.state.retrievedAccessToken.length > 1);
-    let shouldDisplayLoginScreen = (!this.state.displayAuthenticationWebView && this.state.retrievedAccessToken.length < 1);
+    let hasSuccesfullyLoggedIn = (this.state.retrievedAccessToken.length > 1 && this.state.isDataLoading == false);
+    /*if displayAuthenticationWebView == false   AND   the retrievedAccessToken < 1*/
 
     //if the displayAuthenticationWebView is false then show the loginScreen
-    if(shouldDisplayLoginScreen){
+    if(this.state.shouldDisplayLoginScreen){
       return (
         this.loginScreenComponent()
       );
     }
-    //display authentication WebView
-    else if(this.state.displayAuthenticationWebView == true) {
+    /*We want to display the loading screen with the BlurView if data is Loading*/
+    else if (this.state.isDataLoading) {
+      return(
+        this.instagramActivityIndicatorBlurView()
+      );
+    }
+    //display authentication WebView if it is true  AND   shouldDisplayLoginScreen is false
+    else if(this.state.displayAuthenticationWebView && !this.state.shouldDisplayLoginScreen) {
       return (
         this.authenticationWebViewComponent()
       );
     }
     //at this point we've retrieved an access token, the user has succesfully logged on
     else if(hasSuccesfullyLoggedIn){
-      console.log("Yay! Hit has succesfully login");
       return (
         <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
           <Text>CONGRATULATIONS YOUVE LOGGED IN SUCCESFULLY</Text>
