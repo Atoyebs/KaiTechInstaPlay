@@ -29,7 +29,7 @@ class NetworkManager {
 
     /*self/?access_token=ACCESS-TOKEN*/
 
-    axiosEndpointManager.get('self/?access_token=' + this.accessToken)
+    return axiosEndpointManager.get('self/?access_token=' + this.accessToken)
     .then(response => {
       //if the response is succesfully completed
       if (response.request.readyState == responseState.done) {
@@ -43,6 +43,28 @@ class NetworkManager {
 
   }
 
+  getFeedData(feedDataCallBack){
+    //this particular part will send back the sessionData
+    return axiosEndpointManager.get('self/media/recent/?access_token=' + this.accessToken)
+    .then(response => {
+      //if the response is succesfully completed
+      if (response.request.readyState == responseState.done) {
+        feedDataCallBack(response.data);
+      }
+    })
+    .catch(response => {
+      console.log("Oops this one is an error");
+      console.log(response);
+    });
+  }
+
+
+  getSessionAndFeedData(sessionDataCallback, feedDataCallBack){
+    this.getLoggedInUserInformation(sessionDataCallback)
+    .then(this.getFeedData(feedDataCallBack));
+  }
+
 }
+
 
 export { NetworkManager };

@@ -119,10 +119,13 @@ class App extends Component {
 
     let self = this;
 
-    this.networkManager.getLoggedInUserInformation((responseData) => {
-      self.setState({sessionData: responseData});
+    this.networkManager.getSessionAndFeedData((sessionResponse) => {
+      console.log(sessionResponse);
+    }, (feedResponse) => {
+      console.log(feedResponse);
     });
 
+  
     //change the state of a few state values
     this.setState({retrievedAccessToken: accessToken, isDataLoading: true, displayAuthenticationWebView: false});
 
