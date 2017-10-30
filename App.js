@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, TouchableHighlight, Image, StatusBar, Linking, WebView, Alert, ActivityIndicator, StyleSheet } from 'react-native';
+import { Text,
+  View,
+  ScrollView,
+  TouchableHighlight,
+  Image,
+  StatusBar,
+  Linking,
+  WebView,
+  Alert,
+  ActivityIndicator,
+  StyleSheet,
+  FlatList
+} from 'react-native';
 import { Constants, BlurView } from 'expo';
 import Dimensions from 'Dimensions';
-import { LoginButton, TappableText, InstaNavigationBar } from './src/components';
+import { LoginButton, TappableText, InstaNavigationBar, InstaFeedCell } from './src/components';
 import { NetworkManager } from './src/model';
 
 
@@ -76,8 +88,6 @@ class App extends Component {
   onURLStateChange = (webViewState) => {
 
       let accessTokenSubString = 'access_token=';
-
-      console.log("Current webViewState = " + webViewState.url);
 
       if(webViewState.url == urls.instagramBase){
         this.setState({authenticationURL: urls.instagramAuthLogin});
@@ -299,6 +309,13 @@ class App extends Component {
       return (
         <View style={{alignItems: 'center', flex: 1}}>
           <InstaNavigationBar />
+
+          <FlatList
+            data={this.state.feedDataArray}
+            renderItem={({item}) => <InstaFeedCell cellData={item}/>}
+            keyExtractor={item => item.id}
+          />
+
         </View>
       );
     }

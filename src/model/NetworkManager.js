@@ -49,7 +49,7 @@ class NetworkManager {
     .then(response => {
       //if the response is succesfully completed
       if (response.request.readyState == responseState.done) {
-        feedDataCallBack(response.data);
+        feedDataCallBack(response.data.data);
       }
     })
     .catch(response => {

@@ -20,7 +20,7 @@ class InstaNavigationBar extends Component {
         <Image
           resizeMode={'cover'}
           source={require('../images/icons/camera.png')}
-          style={[viewStyles.genericIcon, { width: iconSize * 1.2, height: iconSize * 1.2 }]}
+          style={[viewStyles.genericIcon, { width: iconSize * 1.22, height: iconSize * 1.22 }]}
         />
 
 
@@ -55,7 +55,7 @@ const viewStyles = {
     borderColor: 'rgb(220, 220, 220)',
     backgroundColor: 'white',
     paddingTop: 15,
-    paddingHorizontal: 10
+    paddingHorizontal: 12
   },
   genericIcon: {
     width: iconSize,
