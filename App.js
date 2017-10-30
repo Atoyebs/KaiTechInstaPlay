@@ -120,7 +120,16 @@ class App extends Component {
 
     this.networkManager = new NetworkManager(accessToken);
 
-    this.networkManager.getLoggedInUserInformation();
+
+    let self = this;
+
+    this.networkManager.getLoggedInUserInformation(data => {
+      console.log("Hello Callback!!!");
+      console.log("Response Data In completionCallback = ");
+      console.log("");
+      console.log(data);
+      self.setState({isDataLoading: false});
+    });
 
     //change the state of a few state values
     this.setState({retrievedAccessToken: accessToken, isDataLoading: true, displayAuthenticationWebView: false});

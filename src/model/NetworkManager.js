@@ -17,13 +17,13 @@ class NetworkManager {
     this.accessToken = accessToken;
   }
 
-  getLoggedInUserInformation(){
+  getLoggedInUserInformation(completionCallback){
 
     /*self/?access_token=ACCESS-TOKEN*/
 
     axiosEndpointManager.get('self/?access_token=' + this.accessToken)
     .then(response => {
-      console.log(response.data);
+      completionCallback(response.data);
     })
     .catch(response => {
       console.log("Oops this one is an error");
